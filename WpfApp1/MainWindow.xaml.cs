@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,6 +24,30 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Print("Still responsive");
+        }
+
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var result = await CallingAsync();
+            Print(result);
+        }
+
+        private async Task<string> CallingAsync()
+        {
+            var httpClient = new HttpClient();
+            var message = await httpClient.GetAsync("http://localhost:7071/api/Function1");
+            var content = await message.Content.ReadAsStringAsync();
+            return content;
+        }
+
+        private void Print(string value)
+        {
+            myTextBox.Text += value + Environment.NewLine;
         }
     }
 }
